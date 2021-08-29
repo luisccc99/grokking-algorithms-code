@@ -1,5 +1,8 @@
-# TODO: add stets of dijkstra's algorithm
-# TODO: add code to traverse the final path
+'''Dijkstra's algorithm is used to calculate the shortest path
+for a weighted graph.
+It only works when all the weights are positive.
+'''
+
 import math
 
 # nested dictionary to represent vertices and the cost of their edges
@@ -30,6 +33,7 @@ parents['fin'] = None
 processed = []
 
 # find lowest cost that hasn't been processed
+# a priority queue can be used as well
 def find_lowest_cost_node(costs):
     lowest_cost = math.inf
     lowest_cost_node = None
@@ -39,6 +43,11 @@ def find_lowest_cost_node(costs):
             lowest_cost_node = node 
     return lowest_cost_node
 
+# while there are nodes to process
+# find the 'cheapest' node (the one with the lowest cost)
+# update costs for its neighbors
+# if any of the neighbor's costs were updated, update the parents too
+# mark the node as processed
 node = find_lowest_cost_node(costs)
 while node is not None:
     cost = costs[node]
@@ -50,4 +59,14 @@ while node is not None:
             parents[n] = node
     processed.append(node)
     node = find_lowest_cost_node(costs)
-print(costs)
+
+# display final path, going from finish to start (following parents)
+traversed = []
+node = parents['fin']
+traversed.append('fin')
+while node in parents:
+    traversed.append(node)
+    node = parents[node]
+traversed.append('start')
+traversed.reverse()
+print(traversed)
